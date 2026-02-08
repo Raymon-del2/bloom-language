@@ -1,0 +1,376 @@
+---
+interface TerminalProps {
+  code: string;
+  title?: string;
+  delay?: number;
+  showCopy?: boolean;
+}
+
+const { code, title = 'Bloom Terminal', delay = 0, showCopy = true } = Astro.props;
+
+// Parse code for syntax highlighting
+const highlightCode = (code: string) => {
+  return code
+    .replace(/(python|cli\/seed\.py)/g, '<span class="syntax-keyword">$1</span>')
+    .replace(/(--\w+)/g, '<span class="syntax-flag">$1</span>')
+    .replace(/(\d+)/g, '<span class="syntax-number">$1</span>');
+};
+
+const codeId = `code-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div class="floating-terminal rounded-xl p-6 font-mono text-sm mb-8" data-code={code} data-delay={delay} data-code-id={codeId}>
+  {/* Glass sweep effect */}
+  <div class="glass-sweep"></div>
+  
+  {/* Minimalist copy button - top right */}
+  {showCopy && (
+    <button 
+      class="copy-btn"
+      data-copy-target={codeId}
+      aria-label="Copy to clipboard"
+    >
+      <svg class="copy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+      </svg>
+      <svg class="check-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </button>
+  )}
+
+  {/* Window controls */}
+  <div class="flex items-center gap-2 mb-4">
+    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+    <span class="text-xs text-white/40 ml-2">{title}</span>
+  </div>
+  
+  <div class="terminal-content">
+    <div class="flex items-start gap-2">
+      <span class="prompt">$</span>
+      <div class="typewriter-container">
+        {/* Hidden full text for SEO - Google can index immediately */}
+        <span class="seo-text">{code}</span>
+        {/* Visual typewriter text */}
+        <code class="typewriter-text" data-code={code}></code>
+        <span class="cursor"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Floating Terminal with subtle 3D perspective */
+  .floating-terminal {
+    background: rgba(13, 17, 23, 0.75);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 
+      -20px 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(16, 185, 129, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    animation: float 6s ease-in-out infinite;
+    transform: perspective(1000px) rotateX(4deg) rotateY(-2deg);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, monospace;
+  }
+
+  /* Glass sweep animation - diagonal highlight */
+  .glass-sweep {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.03) 45%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.03) 55%,
+      transparent 100%
+    );
+    animation: glass-sweep 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes glass-sweep {
+    0%, 100% { left: -100%; }
+    50% { left: 200%; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: perspective(1000px) rotateX(4deg) rotateY(-2deg) translateY(0px); }
+    50% { transform: perspective(1000px) rotateX(4deg) rotateY(-2deg) translateY(-8px); }
+  }
+
+  /* Hover state - flatten and lift */
+  .floating-terminal:hover {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-10px) !important;
+    box-shadow: 
+      0 30px 70px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(0, 212, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation-play-state: paused;
+  }
+
+  /* Minimalist copy button - ghost-like integration */
+  .copy-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 0.4;
+  }
+
+  .copy-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+  }
+
+  .copy-btn svg {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+  }
+
+  .copy-btn:hover svg {
+    color: #00d4ff;
+  }
+
+  .copy-btn.copied {
+    opacity: 1;
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+  }
+
+  .copy-btn.copied svg {
+    color: #4ade80;
+  }
+
+  .copy-btn.copied .copy-icon {
+    display: none;
+  }
+
+  .copy-btn.copied .check-icon {
+    display: block;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* Terminal content */
+  .terminal-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Cyan prompt */
+  .prompt {
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+    font-weight: 500;
+    user-select: none;
+  }
+
+  /* Typewriter container */
+  .typewriter-container {
+    position: relative;
+    flex: 1;
+  }
+
+  /* SEO text - hidden but indexed by Google */
+  .seo-text {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Typewriter text */
+  .typewriter-text {
+    color: #e2e8f0;
+    min-height: 1.6em;
+    line-height: 1.6;
+    opacity: 0;
+  }
+
+  .typewriter-text.typing {
+    opacity: 1;
+  }
+
+  /* Blinking cursor - cyan block */
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.2em;
+    background: #00d4ff;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    opacity: 0;
+  }
+
+  .cursor.blink {
+    animation: blink 1s step-end infinite;
+    opacity: 1;
+  }
+
+  .cursor.typing {
+    opacity: 1;
+    animation: none;
+  }
+
+  .cursor.finished {
+    opacity: 0;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Syntax highlighting */
+  .syntax-keyword {
+    color: #00d4ff;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+  }
+
+  .syntax-flag {
+    color: #4ade80;
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+  }
+
+  .syntax-number {
+    color: #f472b6;
+    text-shadow: 0 0 8px rgba(244, 114, 182, 0.3);
+  }
+</style>
+
+<script>
+  // Neural Typewriter with human-like timing variation
+  const initTypewriter = (terminal) => {
+    const typewriterText = terminal.querySelector('.typewriter-text');
+    const cursor = terminal.querySelector('.cursor');
+    const code = terminal.dataset.code || '';
+    const delay = parseInt(terminal.dataset.delay || '0', 10);
+    
+    if (!typewriterText || !code) return;
+
+    let charIndex = 0;
+    
+    // Human-like typing speed variation (30-70ms)
+    const getTypingSpeed = () => {
+      return Math.floor(Math.random() * 40) + 30;
+    };
+
+    const typeChar = () => {
+      if (charIndex < code.length) {
+        const char = code[charIndex];
+        let styledChar = char;
+        
+        // Apply syntax highlighting during typing
+        if (char === '-') {
+          styledChar = `<span class="syntax-flag">${char}`;
+        } else if (code.substring(charIndex).match(/^\d+/)) {
+          const numMatch = code.substring(charIndex).match(/^\d+/)[0];
+          styledChar = `<span class="syntax-number">${numMatch}</span>`;
+          charIndex += numMatch.length - 1;
+        } else if (['p', 'y', 't', 'h', 'o', 'n'].includes(char) && code.substring(charIndex, charIndex + 6) === 'python') {
+          styledChar = `<span class="syntax-keyword">python</span>`;
+          charIndex += 5;
+        }
+        
+        typewriterText.innerHTML = code.substring(0, charIndex).replace(/python/g, '<span class="syntax-keyword">python</span>').replace(/(--\w+)/g, '<span class="syntax-flag">$1</span>').replace(/(\d+)/g, '<span class="syntax-number">$1</span>');
+        charIndex++;
+        
+        if (charIndex <= code.length) {
+          setTimeout(typeChar, getTypingSpeed());
+        }
+      } else {
+        // Typing complete
+        cursor.classList.remove('typing', 'blink');
+        cursor.classList.add('finished');
+        typewriterText.classList.add('typing-complete');
+      }
+    };
+
+    // Start typing after delay when visible
+    setTimeout(() => {
+      cursor.classList.add('typing', 'blink');
+      typewriterText.classList.add('typing');
+      typeChar();
+    }, delay);
+  };
+
+  // Ghost-like copy button
+  const initCopyButton = (btn) => {
+    const terminal = btn.closest('.floating-terminal');
+    const code = terminal?.dataset.code || '';
+    
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code);
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    });
+  };
+
+  // Intersection Observer - trigger at 50% visibility
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const terminal = entry.target;
+        if (!terminal.classList.contains('typing-started')) {
+          terminal.classList.add('typing-started');
+          initTypewriter(terminal);
+        }
+      }
+    });
+  }, observerOptions);
+
+  // Initialize on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const terminals = document.querySelectorAll('.floating-terminal');
+    terminals.forEach(terminal => {
+      observer.observe(terminal);
+    });
+
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    copyBtns.forEach(btn => {
+      initCopyButton(btn);
+    });
+  });
+</script>

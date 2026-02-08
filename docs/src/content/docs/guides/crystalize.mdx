@@ -1,0 +1,134 @@
+---
+title: Crystalize
+description: Transform your liquid code into solid, production-ready binaries.
+---
+
+**Crystalize** is Bloom's build process. It transforms your liquid (development) code into solid (production) binaries that are optimized, signed, and ready for distribution.
+
+## The Crystalize Process
+
+```
+Source Code
+    │
+    ▼
+┌─────────────┐
+│   Parse     │ ──► Dependency Analysis
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Sieve     │ ──► Security Verification
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Optimize  │ ──► Tree Shaking, Minification
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Sign      │ ──► Cryptographic Signature
+└──────┬──────┘
+       │
+       ▼
+   Binary Output
+```
+
+## Building Your Application
+
+```bash
+bloom crystalize
+```
+
+This creates a `dist/` folder with your production build.
+
+## Build Targets
+
+Crystalize supports multiple output formats:
+
+| Target | Command | Output |
+|--------|---------|--------|
+| Web | `crystalize` | Optimized web assets |
+| Desktop | `crystalize --desktop` | .exe, .dmg, .AppImage |
+| Mobile | `crystalize --mobile` | .apk, .ipa |
+| WASM | `crystalize --wasm` | WebAssembly module |
+
+## Configuration
+
+Add to your `seed.json`:
+
+```json
+{
+  "crystalize": {
+    "targets": ["web", "desktop"],
+    "optimization": "size",
+    "sign": true,
+    "bundle": true,
+    "assets": {
+      "minify": true,
+      "compress": true
+    }
+  }
+}
+```
+
+## Optimization Levels
+
+- **speed**: Prioritize runtime performance
+- **size**: Minimize bundle size
+- **balanced**: Middle ground (default)
+
+## Signing Your Build
+
+Signed builds are verified by the Sieve:
+
+```bash
+bloom crystalize --sign
+```
+
+This creates a `.sig` file alongside your binary.
+
+## Deployment
+
+### Static Hosting
+
+```bash
+bloom crystalize
+bloom plant --target=vercel
+```
+
+### Docker
+
+```bash
+bloom crystalize --docker
+```
+
+### Mobile Stores
+
+```bash
+bloom crystalize --mobile
+bloom plant --target=play-store
+```
+
+## Performance
+
+Crystalize optimizations include:
+
+- **Tree Shaking**: Removes unused code
+- **Code Splitting**: Lazy load modules
+- **Asset Optimization**: Compress images/fonts
+- **Dead Code Elimination**: Strip debug code
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Build too large | Use `--optimization=size` |
+| Slow startup | Use `--optimization=speed` |
+| Missing assets | Check `assets` config in seed.json |
+| Signature fail | Verify signing keys are configured |
+
+## Next Steps
+
+- Learn about [deployment options](/guides/deployment/)
+- Explore [advanced configuration](/reference/configuration/)

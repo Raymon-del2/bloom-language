@@ -1,0 +1,121 @@
+---
+title: Pulse Server
+description: The live development server that brings your Bloom applications to life.
+---
+
+**Pulse** is Bloom's live development server. It watches your code, validates it through [The Sieve](/guides/sieve/), and updates your application in real-time.
+
+## Starting Pulse
+
+```bash
+bloom grow
+# or
+bloom pulse
+```
+
+By default, Pulse runs on `http://localhost:8080`.
+
+## Features
+
+### Live Reload
+
+Every change you make triggers an instant update:
+
+- **Code changes**: Hot module replacement
+- **Asset changes**: Immediate refresh
+- **Config changes**: Smart reload
+
+### The HUD
+
+Pulse provides a heads-up display showing:
+
+- 🌱 **Seed Status**: Health of your application
+- ⚡ **Performance**: Load times, memory usage
+- 🔒 **Security**: Sieve verification status
+- 📊 **Metrics**: Requests, errors, uptime
+
+### Smart Error Recovery
+
+When you make a mistake:
+
+1. Pulse catches the error
+2. Shows it in the HUD
+3. Keeps the last working version running
+4. Auto-recovers when fixed
+
+## Configuration
+
+Add to your `seed.json`:
+
+```json
+{
+  "pulse": {
+    "port": 8080,
+    "host": "localhost",
+    "live_reload": true,
+    "hot_module_replacement": true,
+    "open_browser": true,
+    "https": false,
+    "proxy": {
+      "/api": "http://localhost:3000"
+    }
+  }
+}
+```
+
+## Command Line Options
+
+```bash
+bloom grow [options]
+
+Options:
+  -p, --port <number>     Port to run on (default: 8080)
+  -h, --host <address>    Host to bind to (default: localhost)
+  --no-reload            Disable live reload
+  --https                Enable HTTPS
+  --open                 Open browser automatically
+  --sieve <level>        Security level (strict/development/open)
+```
+
+## Advanced Features
+
+### Network Access
+
+Access from other devices:
+
+```bash
+bloom grow --host 0.0.0.0
+```
+
+### HTTPS Development
+
+```bash
+bloom grow --https
+```
+
+Auto-generates local certificates.
+
+### Multiple Instances
+
+Run multiple apps simultaneously:
+
+```bash
+# Terminal 1
+cd app1 && bloom grow --port 8080
+
+# Terminal 2
+cd app2 && bloom grow --port 8081
+```
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Port in use | Use `--port` to specify different port |
+| Changes not showing | Check file is in watched directory |
+| Slow reload | Disable HMR with `--no-reload` |
+| Connection refused | Check firewall settings |
+
+## Next Steps
+
+Ready to deploy? Learn how to [Crystalize](/guides/crystalize/) your app for production.

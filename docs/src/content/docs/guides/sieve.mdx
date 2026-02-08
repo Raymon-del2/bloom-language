@@ -1,0 +1,107 @@
+---
+title: The Sieve
+description: Understanding Bloom's security layer that verifies every component.
+---
+
+The **Sieve** is Bloom's security layer - think of it as an immune system for your application. It ensures only trusted, verified code can execute.
+
+## How The Sieve Works
+
+```
+┌─────────────────────────────────────┐
+│         Code Request                │
+└──────────────┬──────────────────────┘
+               │
+               ▼
+┌─────────────────────────────────────┐
+│      Sieve Verification             │
+│  ┌─────────┐ ┌─────────┐ ┌────────┐ │
+│  │ Signature│ │  Hash   │ │  Trust │ │
+│  │  Check   │ │ Verify  │ │ Chain  │ │
+│  └─────────┘ └─────────┘ └────────┘ │
+└──────────────┬──────────────────────┘
+               │
+          ┌────┴────┐
+          ▼         ▼
+    ┌─────────┐ ┌─────────┐
+    │ ALLOW   │ │  DENY   │
+    └─────────┘ └─────────┘
+```
+
+## Verification Levels
+
+The Sieve operates at three security levels:
+
+| Level | Description | Use Case |
+|-------|-------------|----------|
+| **Strict** | Only signed, verified code | Production |
+| **Development** | Signed + trusted sources | Development |
+| **Open** | All code allowed with warnings | Learning/Testing |
+
+## Signature Verification
+
+Every component has a cryptographic signature:
+
+```json
+{
+  "component": "ui.button",
+  "signature": "sha256:a1b2c3d4...",
+  "signed_by": "bloom.root",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+## Trust Chains
+
+Bloom uses a hierarchical trust model:
+
+1. **Root Seed**: Ultimate authority
+2. **Verified Publishers**: Trusted developers
+3. **Community Packages**: Community-vetted code
+4. **Local Code**: Your own components
+
+## Using The Sieve
+
+Configure in your `seed.json`:
+
+```json
+{
+  "sieve": {
+    "level": "strict",
+    "allowed_publishers": ["bloom.official", "my.org"],
+    "blocked_components": [],
+    "auto_update_trust": true
+  }
+}
+```
+
+## Security HUD
+
+When running `bloom grow`, you'll see the Security Badge in the corner:
+
+- 🟢 **Green**: All components verified
+- 🟡 **Yellow**: Unsigned components present
+- 🔴 **Red**: Blocked components detected
+
+## Best Practices
+
+1. **Always use Strict mode** in production
+2. **Verify signatures** before deploying
+3. **Pin component versions** for reproducibility
+4. **Audit dependencies** regularly
+5. **Report suspicious components** to the community
+
+## Emergency Override
+
+If you need to bypass the Sieve (not recommended):
+
+```bash
+bloom grow --sieve=open
+```
+
+This is logged and flagged for security review.
+
+## Next Steps
+
+- Learn about [Pulse Server](/guides/pulse/) for development
+- Understand [Crystalize](/guides/crystalize/) for production builds

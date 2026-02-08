@@ -1,0 +1,81 @@
+---
+title: Your First Seed
+description: Learn the core concepts of Bloom by creating your first application.
+---
+
+Every Bloom project starts with a **Seed**. Think of it as the DNA of your application - it contains everything needed to grow a fully-functional app.
+
+## What is a Seed?
+
+A Seed is a secure, signed configuration that defines:
+
+- **Structure**: Files and folders
+- **Dependencies**: Required packages
+- **Security**: Cryptographic signatures
+- **UI Components**: Reusable interface elements
+- **AI Prompts**: Context for neural generation
+
+## Creating a Seed
+
+When you run `bloom seed my-app`, Bloom creates:
+
+```
+my-app/
+├── seed.json          # Your app's DNA
+├── src/
+│   ├── main.py        # Entry point
+│   ├── sieve/         # Security config
+│   └── ui/            # UI components
+├── assets/            # Static files
+└── .bloom/            # Internal state
+```
+
+## The seed.json File
+
+This is the heart of your application:
+
+```json
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "signature": "sha256:abc123...",
+  "roots": ["main.py", "ui.app"],
+  "sieve": {
+    "level": "strict",
+    "allow_unsigned": false
+  },
+  "pulse": {
+    "port": 8080,
+    "live_reload": true
+  }
+}
+```
+
+## Understanding Signatures
+
+Every Seed is cryptographically signed. This ensures:
+
+- **Provenance**: You know exactly where code came from
+- **Integrity**: Code hasn't been tampered with
+- **Trust**: Only approved components run
+
+## Growing from Seed
+
+Once planted, your Seed sprouts into a running application:
+
+```bash
+bloom grow
+```
+
+This starts the Pulse server, which:
+
+1. Watches your files for changes
+2. Validates code through the Sieve
+3. Updates the UI in real-time
+4. Provides a development HUD
+
+## Next Steps
+
+- Learn about [The Sieve](/guides/sieve/) security system
+- Explore [Pulse Server](/guides/pulse/) features
+- Understand how to [Crystalize](/guides/crystalize/) for production

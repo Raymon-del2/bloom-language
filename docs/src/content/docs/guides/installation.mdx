@@ -1,0 +1,78 @@
+---
+title: Installation
+description: Detailed installation instructions for Bloom on all platforms.
+---
+
+Bloom supports all major operating systems. Choose your platform below for specific instructions.
+
+## macOS
+
+### Using Homebrew (Recommended)
+
+```bash
+brew tap bloom/tap
+brew install bloom
+```
+
+### Using pip
+
+```bash
+pip install bloom-framework
+```
+
+## Linux
+
+### Ubuntu/Debian
+
+```bash
+# Add the Bloom repository
+curl -fsSL https://bloom.dev/install.sh | bash
+
+# Or use pip
+pip install bloom-framework
+```
+
+### Arch Linux
+
+```bash
+yay -S bloom-framework
+```
+
+## Windows
+
+### Using PowerShell
+
+```powershell
+# Run in PowerShell as Administrator
+irm https://bloom.dev/install.ps1 | iex
+```
+
+### Using pip
+
+```powershell
+pip install bloom-framework
+```
+
+## Docker
+
+Bloom is available as a Docker image for containerized development:
+
+```bash
+docker pull bloom/framework:latest
+docker run -p 8080:8080 -v $(pwd):/app bloom/framework
+```
+
+## Verification
+
+After installation, verify Bloom is working:
+
+```bash
+bloom --version
+bloom doctor
+```
+
+The `doctor` command checks your environment and reports any issues.
+
+## Next Steps
+
+Once installed, head to [Quick Start](/guides/quick-start/) to create your first application.

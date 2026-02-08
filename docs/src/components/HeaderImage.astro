@@ -1,0 +1,28 @@
+---
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+const { width = 200, height = 200 } = Astro.props;
+---
+
+<img 
+  src="/src/assets/bloom-header.webp" 
+  alt="Bloom Framework - Local-First AI Engine"
+  width={width}
+  height={height}
+  class="bloom-logo"
+/>
+
+<style>
+  .bloom-logo {
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3));
+    transition: filter 0.3s ease;
+  }
+
+  .bloom-logo:hover {
+    filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.5));
+  }
+</style>
