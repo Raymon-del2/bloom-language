@@ -5,7 +5,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Raymon-del2/bloom-language/actions"><img src="https://img.shields.io/github/actions/workflow/status/Raymon-del2/bloom-language/ci.yml?branch=main&label=CI&logo=github&color=10b981" alt="CI Status"></a>
   <a href="https://github.com/Raymon-del2/bloom-language/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Raymon-del2/bloom-language?color=8b5cf6" alt="License"></a>
   <a href="https://github.com/Raymon-del2/bloom-language/stargazers"><img src="https://img.shields.io/github/stars/Raymon-del2/bloom-language?style=social" alt="GitHub Stars"></a>
 </p>
