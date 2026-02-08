@@ -1,0 +1,191 @@
+---
+const { title = "Identity Vault" } = Astro.props;
+---
+
+<div class="identity-vault-demo">
+  <div class="bloom-vault" security="high">
+    <div class="vault-shield">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+    </div>
+    <div class="vault-content">
+      <h3>{title}</h3>
+      <div class="security-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">Sieve Protected</span>
+      </div>
+    </div>
+    <div class="vault-glow"></div>
+    <div class="vault-particles">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .identity-vault-demo {
+    padding: 1rem;
+  }
+
+  .bloom-vault {
+    background: linear-gradient(145deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    min-width: 220px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .bloom-vault:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 60px rgba(251, 191, 36, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(251, 191, 36, 0.5);
+  }
+
+  .vault-shield {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    position: relative;
+  }
+
+  .vault-shield svg {
+    width: 28px;
+    height: 28px;
+    color: #fbbf24;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
+  }
+
+  .vault-shield::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.5;
+    animation: rotate-border 4s linear infinite;
+  }
+
+  @keyframes rotate-border {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .vault-content h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fbbf24;
+    letter-spacing: -0.02em;
+  }
+
+  .security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 2rem;
+    font-size: 0.8rem;
+    color: #fbbf24;
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse-green 2s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  .badge-text {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .vault-glow {
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at 70% 30%,
+      rgba(251, 191, 36, 0.08) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .bloom-vault:hover .vault-glow {
+    opacity: 1;
+  }
+
+  .vault-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .vault-particles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(251, 191, 36, 0.4);
+    border-radius: 50%;
+    animation: float-particle 3s ease-in-out infinite;
+  }
+
+  .vault-particles span:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .vault-particles span:nth-child(2) {
+    top: 60%;
+    right: 15%;
+    animation-delay: 1s;
+  }
+
+  .vault-particles span:nth-child(3) {
+    bottom: 20%;
+    left: 30%;
+    animation-delay: 2s;
+  }
+
+  @keyframes float-particle {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
+    50% { transform: translateY(-10px) scale(1.2); opacity: 0.8; }
+  }
+</style>

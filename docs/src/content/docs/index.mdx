@@ -23,10 +23,11 @@ import FeatureShowcase from '../../components/FeatureShowcase.astro';
 import GlassCard from '../../components/GlassCard.astro';
 import NeonButton from '../../components/NeonButton.astro';
 import VinesDashboard from '../../components/VinesDashboard.astro';
+import IdentityVault from '../../components/IdentityVault.astro';
 
 ## Bloom UI Components
 
-Write simple markup, get beautiful UI.
+Write simple markup, get beautiful UI. Watch the code type on the left, see the result bloom on the right.
 
 <FeatureShowcase code='<card material="glass">Hello Bloom</card>' delay={0}>
   <GlassCard />
@@ -41,6 +42,11 @@ Write simple markup, get beautiful UI.
 <FeatureShowcase code='<vines columns="2">...</vines>' delay={2000}>
   <VinesDashboard />
   <span slot="caption">Vines Dashboard — Crystalized, perfectly aligned layouts</span>
+</FeatureShowcase>
+
+<FeatureShowcase code='<vault security="high" identity>...</vault>' delay={3000}>
+  <IdentityVault />
+  <span slot="caption">Identity Vault — Sieve protected, cryptographically secured</span>
 </FeatureShowcase>
 
 ## Why Bloom?
