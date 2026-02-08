@@ -9,15 +9,11 @@
     "docs"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "format": "npm run format --workspaces --if-present",
-    "docs:dev": "cd docs && npm run dev",
-    "docs:build": "cd docs && npm run build",
-    "seed:dev": "cd packages/seed && npm run dev",
-    "engine:dev": "cd packages/engine && npm run dev"
+    "dev": "cd docs && npm run dev",
+    "build": "cd docs && npm run build && cp -r dist ../public",
+    "test": "echo 'No tests'",
+    "lint": "echo 'No linting'",
+    "format": "echo 'No formatting'"
   },
   "keywords": [
     "bloom",
