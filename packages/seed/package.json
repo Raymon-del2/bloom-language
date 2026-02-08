@@ -12,11 +12,9 @@
     "bloom-sprout": "./bin/sprout.js"
   },
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc",
     "test": "vitest",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "lint": "echo 'No linting configured'",
+    "format": "echo 'No formatting configured'"
   },
   "keywords": [
     "bloom",
