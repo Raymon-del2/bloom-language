@@ -22,18 +22,16 @@ Before you begin, make sure you have:
 1. **Install Bloom via pip:**
 
    ```bash
-   pip install bloom-framework
+   python -m pip install bloom-framework
    ```
 
-   :::tip[Add pip to PATH]
-   If you see "pip is not recognized", add pip to your system PATH:
-
+   :::tip[Fixing pip issues on Windows]
+   If you get "Fatal error in launcher", your pip launcher is broken. Use `python -m pip` instead (shown above) which always works.
+   
+   To fix pip permanently, run:
    ```powershell
-   # Replace 3.12 with your Python version
-   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\$env:USERNAME\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\Scripts", "User")
+   python -m pip install --upgrade pip --force-reinstall
    ```
-
-   Then **restart your terminal** and try again.
    :::
 
 2. **Verify the installation:**
@@ -48,7 +46,7 @@ Before you begin, make sure you have:
 
    ```bash
    bloom seed my-first-app
-   cd my-first-app
+   cd "my-first-app"
    ```
 
 4. **Grow your application:**
