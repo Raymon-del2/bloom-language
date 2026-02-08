@@ -76,7 +76,7 @@ export default defineConfig({
 						description: 'The Local-First AI Engine. Plant your code, watch it grow.',
 						url: 'https://bloom.dev',
 						sameAs: [
-							'https://github.com/bloom'
+							'https://github.com/Raymon-del2/bloom-language'
 						],
 						offers: {
 							'@type': 'Offer',
