@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom Engine Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preview-header {
+            color: #fff;
+            text-align: center;
+        }
+
+        .preview-header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .preview-header p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: #000;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 3px #333,
+                0 0 0 6px #1a1a1a,
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(0, 212, 255, 0.1);
+            position: relative;
+            transition: transform 0.1s;
+        }
+
+        .haptic-shake {
+            animation: shake 0.1s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* Phone Screen */
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Bloom Engine Container */
+        .bloom-engine {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Logo Spin Animation */
+        .logo-spin {
+            animation: logo-spin 20s linear infinite;
+        }
+
+        @keyframes logo-spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Text Elements */
+        .bloom-text {
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bloom-text.neon {
+            color: #00d4ff;
+            text-shadow: 
+                0 0 5px #00d4ff,
+                0 0 10px #00d4ff,
+                0 0 20px #00d4ff;
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        .bloom-text.ruby {
+            color: #ff0055;
+            text-shadow: 
+                0 0 5px #ff0055,
+                0 0 10px #ff0055,
+                0 0 20px #ff0055;
+            animation: rubyPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rubyPulse {
+            0%, 100% { text-shadow: 0 0 5px #ff0055, 0 0 10px #ff0055, 0 0 20px #ff0055; }
+            50% { text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055, 0 0 40px #ff0055; }
+        }
+
+        /* Vines Layout */
+        .bloom-vines {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* Security Modal */
+        .security-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .security-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .modal-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .seed-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00d4ff;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-family: monospace;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .seed-input:focus {
+            outline: none;
+            border-color: #7b2cbf;
+            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.verify {
+            background: linear-gradient(135deg, #00d4ff 0%, #7b2cbf 100%);
+            color: #fff;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+            border: 1px solid #333;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Security Alert */
+        .security-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff0055, #ff5500, #ffaa00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            animation: securityAlert 0.5s ease-in-out;
+        }
+
+        .security-alert.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @keyframes securityAlert {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .alert-content {
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ff0055;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .alert-content h2 {
+            color: #ff0055;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .alert-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* Gold material for unlocked vault */
+        .bloom-card.gold {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 50%, #ff8c00 100%);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .bloom-card.gold .bloom-text {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes neonPulse {
+            0%, 100% {
+                text-shadow: 
+                    0 0 5px #00d4ff,
+                    0 0 10px #00d4ff,
+                    0 0 20px #00d4ff,
+                    0 0 40px #00d4ff,
+                    0 0 80px #00d4ff;
+            }
+            50% {
+                text-shadow: 
+                    0 0 10px #00d4ff,
+                    0 0 20px #00d4ff,
+                    0 0 40px #00d4ff,
+                    0 0 80px #00d4ff,
+                    0 0 120px #00d4ff;
+            }
+        }
+
+        /* Button Elements */
+        .bloom-button {
+            background: linear-gradient(135deg, #7b2cbf 0%, #5a189a 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bloom-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(123, 44, 191, 0.4);
+        }
+
+        .bloom-button:active {
+            transform: translateY(0);
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Container Elements */
+        .bloom-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bloom-container.center {
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #888;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #ff6b6b;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Auto-refresh indicator */
+        .refresh-indicator {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00d4ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse-flash {
+            animation: pulseFlash 0.5s ease-out;
+        }
+
+        @keyframes pulseFlash {
+            0% { color: #00d4ff; }
+            50% { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
+            100% { color: #00d4ff; }
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        
+        <div class="phone-frame">
+            <div class="phone-screen">
+                <div class="status-bar">
+                    <span>9:41</span>
+                    <span>📶 🔋</span>
+                </div>
+                
+                <div class="bloom-engine" id="engine">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading Bloom app...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Modal -->
+    <div class="security-modal" id="security-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 Root Seed Verification</h2>
+                <p>Enter your 24-character Root Seed to unlock the Identity Vault</p>
+            </div>
+            <input type="text" class="seed-input" id="seed-input" placeholder="BLM-XXXX-XXXX-XXXX-XXXX" maxlength="24">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeSecurityModal()">Cancel</button>
+                <button class="modal-btn verify" onclick="verifySeed()">Verify</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Alert -->
+    <div class="security-alert" id="security-alert">
+        <div class="alert-content">
+            <h2>🚨 SECURITY ALERT</h2>
+            <p>Unauthorized access attempt detected</p>
+            <button class="modal-btn verify" onclick="closeSecurityAlert()">Dismiss</button>
+        </div>
+    </div>
+
+    <script>
+        const MANIFEST_URL = '../dist/manifest.json';
+        const POLL_INTERVAL = 2000; // 2 seconds
+        let lastManifestHash = null;
+
+        // Fetch and render manifest
+        async function loadManifest() {
+            try {
+                // Add cache buster to force fresh load
+                const response = await fetch(`${MANIFEST_URL}?t=${Date.now()}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.text();
+                const currentHash = simpleHash(data);
+                
+                // Only re-render if manifest changed
+                if (currentHash !== lastManifestHash) {
+                    lastManifestHash = currentHash;
+                    const manifest = JSON.parse(data);
+                    renderManifest(manifest);
+                    console.log('🌸 Bloom Engine: Manifest updated');
+                }
+            } catch (error) {
+                console.error('Error loading manifest:', error);
+                showError(error.message);
+            }
+        }
+
+        // Simple hash function to detect changes
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString();
+        }
+
+        // Render manifest to DOM
+        function renderManifest(manifest) {
+            const engine = document.getElementById('engine');
+            engine.innerHTML = '';
+            
+            if (!manifest.nodes || manifest.nodes.length === 0) {
+                engine.innerHTML = '<div class="loading"><p>No nodes found</p></div>';
+                return;
+            }
+
+            manifest.nodes.forEach(node => {
+                const element = createNodeElement(node);
+                if (element) {
+                    engine.appendChild(element);
+                }
+            });
+
+            // Trigger pulse animation on successful render
+            triggerPulse();
+        }
+
+        // Trigger pulse animation
+        function triggerPulse() {
+            const indicator = document.getElementById('refresh-indicator');
+            if (indicator) {
+                indicator.classList.remove('pulse-flash');
+                // Force reflow to restart animation
+                void indicator.offsetWidth;
+                indicator.classList.add('pulse-flash');
+            }
+        }
+
+        // Create DOM element from node
+        function createNodeElement(node) {
+            const { type, attributes, content } = node;
+            
+            switch (type) {
+                case 'text':
+                    return createTextElement(attributes, content);
+                case 'button':
+                    return createButtonElement(attributes, content);
+                case 'container':
+                    return createContainerElement(attributes, content);
+                case 'vines':
+                    return createVinesElement(attributes, content);
+                case 'card':
+                    return createCardElement(attributes, content);
+                default:
+                    console.warn(`Unknown node type: ${type}`);
+                    return null;
+            }
+        }
+
+        // Create vines element
+        function createVinesElement(attributes, content) {
+            const element = document.createElement('div');
+            element.className = 'bloom-vines';
+            return element;
+        }
+
+        // Create card element
+        function createCardElement(attributes, content) {
+            const element = document.createElement('div');
+            element.className = 'bloom-card';
+            if (attributes.id) element.id = attributes.id;
+            return element;
+        }
+
+        // Handle Bloom Actions
+        function handleAction(action, attributes) {
+            triggerHaptic();
+            
+            if (action === 'mutate') {
+                const target = document.getElementById(attributes.target);
+                if (target) {
+                    if (attributes['to-text']) {
+                        target.textContent = attributes['to-text'];
+                    }
+                    if (attributes['to-material']) {
+                        // Remove old materials
+                        target.classList.remove('neon', 'ruby');
+                        target.classList.add(attributes['to-material']);
+                    }
+                }
+            } else if (action === 'verify_seed') {
+                // Store the attributes for verification callback
+                window.seedVerificationAttributes = attributes;
+                showSecurityModal();
+            }
+            
+            console.log(`🌸 Action Triggered: ${action}`, attributes);
+        }
+
+        // Trigger Haptic Simulation
+        function triggerHaptic() {
+            const phone = document.querySelector('.phone-frame');
+            phone.classList.remove('haptic-shake');
+            void phone.offsetWidth; // Force reflow
+            phone.classList.add('haptic-shake');
+            
+            if (window.navigator.vibrate) {
+                window.navigator.vibrate(50);
+            }
+        }
+
+        // Security Modal Functions
+        let failedAttempts = 0;
+
+        function showSecurityModal() {
+            document.getElementById('security-modal').classList.add('active');
+            document.getElementById('seed-input').focus();
+        }
+
+        function closeSecurityModal() {
+            document.getElementById('security-modal').classList.remove('active');
+            document.getElementById('seed-input').value = '';
+        }
+
+        function verifySeed() {
+            const enteredSeed = document.getElementById('seed-input').value.trim();
+            
+            // For demo purposes, we'll use a hardcoded seed. In production, this would read from set.bloom
+            const correctSeed = "BLM-4WLS-RDKE-BWCB-8LVO"; // This is the seed from your example
+            
+            if (enteredSeed === correctSeed) {
+                // Success - unlock vault
+                closeSecurityModal();
+                unlockVault();
+                failedAttempts = 0;
+                console.log("[SECURITY] Identity Vault unlocked successfully");
+            } else {
+                // Failed attempt
+                failedAttempts++;
+                document.getElementById('seed-input').value = '';
+                document.getElementById('seed-input').placeholder = `Incorrect seed (${3 - failedAttempts} attempts remaining)`;
+                
+                if (failedAttempts >= 3) {
+                    // Security alert after 3 failed attempts
+                    closeSecurityModal();
+                    showSecurityAlert();
+                    failedAttempts = 0;
+                    console.log("[SECURITY] Security alert triggered - too many failed attempts");
+                } else {
+                    // Shake the input field
+                    const input = document.getElementById('seed-input');
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 500);
+                }
+            }
+        }
+
+        function unlockVault() {
+            // Apply the stored mutation attributes
+            const attributes = window.seedVerificationAttributes;
+            if (attributes) {
+                const target = document.getElementById(attributes.target);
+                if (target) {
+                    if (attributes['to-text']) {
+                        target.textContent = attributes['to-text'];
+                    }
+                    if (attributes['to-material']) {
+                        target.classList.remove('neon', 'ruby', 'glass');
+                        target.classList.add(attributes['to-material']);
+                    }
+                }
+            }
+            
+            // Unlock the vault card with gold material
+            const vaultCard = document.getElementById('vault-card');
+            if (vaultCard) {
+                vaultCard.classList.add('gold');
+                // Update vault card content to show unlocked state
+                const vaultText = vaultCard.querySelector('.bloom-text');
+                if (vaultText) {
+                    vaultText.textContent = "Identity Vault Unlocked";
+                }
+            }
+            
+            // Trigger success haptic
+            triggerHaptic();
+            setTimeout(() => triggerHaptic(), 100);
+        }
+
+        function showSecurityAlert() {
+            document.getElementById('security-alert').classList.add('active');
+        }
+
+        function closeSecurityAlert() {
+            document.getElementById('security-alert').classList.remove('active');
+        }
+
+        // Allow Enter key to verify seed
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('seed-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifySeed();
+                }
+            });
+        });
+
+        // Create text element
+        function createTextElement(attributes, content) {
+            const element = document.createElement('div');
+            element.className = 'bloom-text';
+            
+            // Apply size
+            if (attributes.size) {
+                element.style.fontSize = `${attributes.size}px`;
+            }
+            
+            // Apply material
+            if (attributes.material === 'neon') {
+                element.classList.add('neon');
+            }
+            
+            element.textContent = content || '';
+            return element;
+        }
+
+        // Create button element
+        function createButtonElement(attributes, content) {
+            const button = document.createElement('button');
+            button.className = 'bloom-button';
+            button.textContent = content || '';
+            
+            // Add ripple effect and action handler
+            button.addEventListener('click', function(e) {
+                createRipple(e, this);
+                handleAction(attributes.action, attributes);
+            });
+            
+            return button;
+        }
+
+        // Create ripple effect
+        function createRipple(event, button) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+            ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Create container element
+        function createContainerElement(attributes, content) {
+            const container = document.createElement('div');
+            container.className = 'bloom-container';
+            
+            // Apply padding
+            if (attributes.padding) {
+                container.style.padding = `${attributes.padding}px`;
+            }
+            
+            // Apply center alignment
+            if (attributes.center) {
+                container.classList.add('center');
+            }
+            
+            return container;
+        }
+
+        // Show error message
+        function showError(message) {
+            const engine = document.getElementById('engine');
+            engine.innerHTML = `
+                <div class="error">
+                    <p>❌ Error loading Bloom app</p>
+                    <p style="font-size: 12px; margin-top: 8px;">${message}</p>
+                    <p style="font-size: 12px; margin-top: 16px;">Make sure to run: python cli/sprout.py</p>
+                </div>
+            `;
+        }
+
+        // Start polling
+        function startPolling() {
+            loadManifest(); // Initial load
+            setInterval(loadManifest, POLL_INTERVAL);
+        }
+
+        // Initialize
+        startPolling();
+    </script>
+</body>
+</html>

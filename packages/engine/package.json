@@ -1,0 +1,67 @@
+{
+  "name": "@bloom/engine",
+  "version": "1.0.0",
+  "description": "Core Bloom engine and runtime",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./sieve": {
+      "import": "./dist/sieve.js",
+      "types": "./dist/sieve.d.ts"
+    },
+    "./pulse": {
+      "import": "./dist/pulse.js",
+      "types": "./dist/pulse.d.ts"
+    },
+    "./crystalize": {
+      "import": "./dist/crystalize.js",
+      "types": "./dist/crystalize.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "bloom",
+    "engine",
+    "runtime",
+    "local-first",
+    "ai",
+    "sieve",
+    "pulse",
+    "crystalize"
+  ],
+  "author": "Bloom Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bloom/bloom-framework.git",
+    "directory": "packages/engine"
+  },
+  "dependencies": {
+    "ws": "^8.14.0",
+    "chokidar": "^3.5.3",
+    "esbuild": "^0.19.0",
+    "rollup": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

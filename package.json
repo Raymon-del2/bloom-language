@@ -1,0 +1,44 @@
+{
+  "name": "bloom-framework",
+  "version": "1.0.0",
+  "description": "Bloom - The Local-First AI Engine. Plant your code, watch it grow.",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "docs"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "npm run format --workspaces --if-present",
+    "docs:dev": "cd docs && npm run dev",
+    "docs:build": "cd docs && npm run build",
+    "seed:dev": "cd packages/seed && npm run dev",
+    "engine:dev": "cd packages/engine && npm run dev"
+  },
+  "keywords": [
+    "bloom",
+    "local-first",
+    "ai-engine",
+    "seed",
+    "crystalize",
+    "sieve",
+    "pulse"
+  ],
+  "author": "Bloom Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bloom/bloom-framework.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bloom/bloom-framework/issues"
+  },
+  "homepage": "https://bloom.dev",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
