@@ -1,14 +1,13 @@
 # Bloom
 
 <p align="center">
-  <img src="https://bloom.dev/logo.svg" width="120" alt="Bloom Logo">
+  <img src="https://raw.githubusercontent.com/Raymon-del2/bloom-language/master/docs/src/assets/bloom-logo.webp" width="120" alt="Bloom Logo">
 </p>
 
 <p align="center">
-  <a href="https://github.com/bloom/bloom-framework/actions"><img src="https://img.shields.io/github/actions/workflow/status/bloom/bloom-framework/ci.yml?branch=main&label=CI&logo=github&color=10b981" alt="CI Status"></a>
-  <a href="https://www.npmjs.com/package/bloom-framework"><img src="https://img.shields.io/npm/v/bloom-framework?color=06b6d4&logo=npm" alt="NPM Version"></a>
-  <a href="https://github.com/bloom/bloom-framework/blob/main/LICENSE"><img src="https://img.shields.io/github/license/bloom/bloom-framework?color=8b5cf6" alt="License"></a>
-  <a href="https://github.com/bloom/bloom-framework/stargazers"><img src="https://img.shields.io/github/stars/bloom/bloom-framework?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/Raymon-del2/bloom-language/actions"><img src="https://img.shields.io/github/actions/workflow/status/Raymon-del2/bloom-language/ci.yml?branch=main&label=CI&logo=github&color=10b981" alt="CI Status"></a>
+  <a href="https://github.com/Raymon-del2/bloom-language/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Raymon-del2/bloom-language?color=8b5cf6" alt="License"></a>
+  <a href="https://github.com/Raymon-del2/bloom-language/stargazers"><img src="https://img.shields.io/github/stars/Raymon-del2/bloom-language?style=social" alt="GitHub Stars"></a>
 </p>
 
 <p align="center">
@@ -63,21 +62,15 @@ bloom grow
 
 ## Packages
 
-| Package | Version | Description |
-|---------|---------|-------------|
-| [@bloom/seed](./packages/seed) | [![npm](https://img.shields.io/npm/v/@bloom/seed?color=10b981)](https://npmjs.com/package/@bloom/seed) | CLI for seed creation and management |
-| [@bloom/engine](./packages/engine) | [![npm](https://img.shields.io/npm/v/@bloom/engine?color=06b6d4)](https://npmjs.com/package/@bloom/engine) | Core engine and runtime |
-| [docs](./docs) | - | Documentation site (Astro + Starlight) |
+| Package | Description |
+|---------|-------------|
+| [@bloom/seed](./packages/seed) | CLI for seed creation and management |
+| [@bloom/engine](./packages/engine) | Core engine and runtime |
+| [docs](./docs) | Documentation site (Astro + Starlight) |
 
 ## Documentation
 
-Visit [bloom.dev](https://bloom.dev) for the full documentation, guides, and API reference.
-
-## Community
-
-- 💬 [Discord](https://discord.gg/bloom)
-- 🐦 [Twitter](https://twitter.com/bloomframework)
-- 📧 [Email](mailto:hello@bloom.dev)
+Visit [bloom-language.vercel.app](https://bloom-language.vercel.app) for the full documentation, guides, and API reference.
 
 ## License
 
