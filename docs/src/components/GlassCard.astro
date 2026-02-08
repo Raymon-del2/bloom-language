@@ -1,0 +1,88 @@
+---
+const { title = "Glass Card" } = Astro.props;
+---
+
+<div class="glass-card-demo">
+  <div class="bloom-card" material="glass">
+    <div class="card-header">
+      <div class="card-icon">🌱</div>
+      <h3>{title}</h3>
+    </div>
+    <p class="card-content">Hello Bloom</p>
+    <div class="card-glow"></div>
+  </div>
+</div>
+
+<style>
+  .glass-card-demo {
+    padding: 1rem;
+  }
+
+  .bloom-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .bloom-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 60px rgba(139, 92, 246, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+  }
+
+  .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .card-content {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .bloom-card:hover .card-glow {
+    opacity: 1;
+  }
+</style>

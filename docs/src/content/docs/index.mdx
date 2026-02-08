@@ -19,25 +19,29 @@ hero:
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
-import Terminal from '../../components/Terminal.astro';
+import FeatureShowcase from '../../components/FeatureShowcase.astro';
+import GlassCard from '../../components/GlassCard.astro';
+import NeonButton from '../../components/NeonButton.astro';
+import VinesDashboard from '../../components/VinesDashboard.astro';
 
-## Quick Start: Plant your first Seed
+## Bloom UI Components
 
-<div class="flex justify-center my-10">
-  <Terminal code="python cli/seed.py --init" delay={0} />
-</div>
+Write simple markup, get beautiful UI.
 
-## Step 2: Start Growing
+<FeatureShowcase code='<card material="glass">Hello Bloom</card>' delay={0}>
+  <GlassCard />
+  <span slot="caption">Glass Card — Beautiful, blurred surfaces with soft glow</span>
+</FeatureShowcase>
 
-<div class="flex justify-center my-10">
-  <Terminal code="python cli/seed.py --grow" delay={2000} />
-</div>
+<FeatureShowcase code='<button material="neon">Pulse</button>' delay={1000}>
+  <NeonButton />
+  <span slot="caption">Neon Button — Glowing cyan with heartbeat animation</span>
+</FeatureShowcase>
 
-## Step 3: Crystalize for Production
-
-<div class="flex justify-center my-10">
-  <Terminal code="python cli/seed.py --crystalize" delay={4000} />
-</div>
+<FeatureShowcase code='<vines columns="2">...</vines>' delay={2000}>
+  <VinesDashboard />
+  <span slot="caption">Vines Dashboard — Crystalized, perfectly aligned layouts</span>
+</FeatureShowcase>
 
 ## Why Bloom?
 
