@@ -1,7 +1,7 @@
 # Bloom
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Raymon-del2/bloom-language/master/docs/src/assets/bloom-logo.webp" width="120" alt="Bloom Logo">
+  <img src="https://raw.githubusercontent.com/Raymon-del2/bloom-language/master/bloom-logo.webp" width="120" alt="Bloom Logo">
 </p>
 
 <p align="center">
