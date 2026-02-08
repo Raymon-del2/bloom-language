@@ -16,6 +16,7 @@ export default defineConfig({
 			title: 'Bloom',
 			description: 'Bloom - The Local-First AI Engine. Plant your code, watch it grow.',
 			pagefind: false,
+			defaultTheme: 'dark',
 			logo: {
 				src: './src/assets/bloom-logo.webp',
 				alt: 'Bloom Framework - Local-First AI Engine',
