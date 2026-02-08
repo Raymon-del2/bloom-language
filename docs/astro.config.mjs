@@ -23,9 +23,6 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Raymon-del2/bloom-language' },
 			],
-			editLink: {
-				baseUrl: 'https://github.com/Raymon-del2/bloom-language/edit/master/docs/',
-			},
 			customCss: [
 				'./src/styles/custom.css',
 			],
