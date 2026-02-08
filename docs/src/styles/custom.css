@@ -283,3 +283,13 @@
 .starlight-code .expressive-code .token.selector {
   color: #e06c75 !important;
 }
+
+/* Hide theme toggle button */
+[data-theme-toggle] {
+  display: none !important;
+}
+
+/* Force dark mode colors */
+:root {
+  color-scheme: dark;
+}
