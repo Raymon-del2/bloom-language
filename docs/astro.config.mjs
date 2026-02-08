@@ -21,7 +21,7 @@ export default defineConfig({
 				alt: 'Bloom Framework - Local-First AI Engine',
 			},
 			social: [
-				{ icon: 'github', label: 'GitHub', href: 'https://github.com/bloom' },
+				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Raymon-del2/bloom-language' },
 			],
 			customCss: [
 				'./src/styles/custom.css',
